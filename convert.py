@@ -13,7 +13,7 @@ def camel_to_snake_case(input_str):
 # Adjust camel case conversion logic
 def camel_case_convert(input_str):
     # Consider camel case when splitting the string
-    if "_" in input_str or "-" in input_str:
+    if "_" in input_str or "-" in input_str or " " in input_str:
         components = re.split(r"[-_\s]+", input_str)
         return components[0].lower() + "".join(x.title() for x in components[1:])
     else:  # If input is already in camel case, do not convert
@@ -23,7 +23,7 @@ def camel_case_convert(input_str):
 # Adjust snake case conversion logic
 def snake_case_convert(input_str):
     # Convert to snake case if input is in camel case
-    if re.search("[A-Z]", input_str):
+    if re.search("(.)([A-Z][a-z]+)", input_str):
         input_str = camel_to_snake_case(input_str)
     components = re.split(r"[-\s]+", input_str)
     return "_".join(x.lower() for x in components)
@@ -38,11 +38,7 @@ def get_clipboard_data():
 # Process clipboard or argument
 def process_input(workflow, input_str):
     # Apply camel and snake case conversion
-    snake_case = (
-        camel_to_snake_case(input_str)
-        if re.search("[A-Z]", input_str)
-        else snake_case_convert(input_str)
-    )
+    snake_case = snake_case_convert(input_str)
     camel_case = camel_case_convert(input_str)
 
     workflow.add_item(
